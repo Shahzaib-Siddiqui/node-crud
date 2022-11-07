@@ -3,21 +3,18 @@ const express = require('express')
 const app = express()
 const port = 3000
 
-app.get('/getUsers', (request, response) => {
-    response.json({ info: 'Node.js, Express, and Postgres API' })
-  })
-
 
 const db = require('./dbcon')
+const {getUser} = require('./query')
 
-app.use(bodyParser.json())
-app.use(
-    bodyParser.urlencoded({
-        extended: true,
-    })
-)
+// app.use(bodyParser.json())
+// app.use(
+//     bodyParser.urlencoded({
+//         extended: true,
+//     })
+// )
 
-app.get('/users', db.getUsers)
+app.get('/users', getUser)
 
 
 app.listen(port, () => {

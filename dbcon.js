@@ -1,5 +1,4 @@
 const Pool = require('pg').Pool
-
 const pool = new Pool({
 user:'equmnnxktroehw',
 host:'ec2-44-205-177-160.compute-1.amazonaws.com',
@@ -12,21 +11,15 @@ ssl:{
 
 })
 
-const getUsers = (request, response) => {
-    try{
-    let query=SELECT * FROM public.test;
+
+const query_func = (query)=>{
     pool.query(query, (error, results) => {
-      if (error) {
-        throw error
-      }
-      response.status(200).json(results.rows)
-    })
-  }}
-catch(err){
-response.status(500).send(err)
+        if (error) {
+          throw error
+        }
+        // response.status(200).json(results.rows)
+        return results
+      })
 }
 
-
-  module.exports = {
-    getUsers
-  }
+module.exports= query_func;
