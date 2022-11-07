@@ -14,7 +14,8 @@ ssl:{
 
 const getUsers = (request, response) => {
     try{
-    pool.query('SELECT * FROM public.test', (error, results) => {
+    let query=SELECT * FROM public.test;
+    pool.query(query, (error, results) => {
       if (error) {
         throw error
       }
