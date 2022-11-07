@@ -13,13 +13,17 @@ ssl:{
 })
 
 const getUsers = (request, response) => {
+    try{
     pool.query('SELECT * FROM public.test', (error, results) => {
       if (error) {
         throw error
       }
       response.status(200).json(results.rows)
     })
-  }
+  }}
+catch(err){
+response.status(500).send(err)
+}
 
 
   module.exports = {
