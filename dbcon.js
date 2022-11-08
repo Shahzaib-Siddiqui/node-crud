@@ -17,9 +17,51 @@ const query_func = (query)=>{
         if (error) {
           throw error
         }
-        // response.status(200).json(results.rows)
-        return results
+        //  res.status(200).json(results.rows)
+         return results
       })
 }
 
-module.exports= query_func;
+const createUser = (request, response) => {
+   const {id, fname, email } = request.body
+
+  pool.query('INSERT INTO public.Users (id,fname, email) VALUES ($1, $2, $3) RETURNING *', [id, fname, email], (error, results) =>  {
+    if (error) {
+      throw error
+    }
+    response.status(201).send('User added with ID: ${results.rows[0].fname}')
+  })
+}
+
+
+const UpdateUser = (request, response) => {
+  const {id, fname } = request.body
+
+ pool.query('UPDATE  public.Users set fname=$2  where id=$1 ', [id, fname], (error, results) =>  {
+   if (error) {
+     throw error
+   }
+   response.status(200).send('User updated id')
+ })
+}
+
+const DeleteeUser = (request, response) => {
+  const {id } = request.body
+
+ pool.query('Delete From  public.Users   where id=$1 ', [id], (error, results) =>  {
+   if (error) {
+     throw error
+   }
+   response.status(200).send('User DEleted ')
+ })
+}
+
+
+
+
+module.exports= {
+  query_func,
+  createUser,
+  UpdateUser
+
+};

@@ -1,19 +1,21 @@
 
 
-const query_func = require('./dbcon')
+const {query_func} = require('./dbcon')
 
-const getUsers = (response,req ) => {
+const getUsers = (req, res) => {
     
   try{
     let query='SELECT * FROM public.test';
-     const res = query_func(query)
-     response.status(200).send(res.rows)
+     const reqq = query_func(query)
+     res.status(200).send(reqq.rows)
 
   }catch(err){
-    response.status(500).send(err)
+    res.status(500).send(err)
 
   }
   }
+
+
 
   module.exports = {
     getUsers
