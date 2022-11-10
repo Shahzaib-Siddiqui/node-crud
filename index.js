@@ -4,7 +4,7 @@ const app = express()
 const port = 3000
 
 
- const {createUser,UpdateUser} = require('./dbcon')
+ const {createUser,UpdateUser,DeleteeUser,fetch,counttask} = require('./dbcon')
 const {getUsers} = require('./query')
 
 app.use(bodyParser.json())
@@ -15,9 +15,11 @@ app.use(
 )
 
 app.get('/users', getUsers)
+app.get('/task', counttask)
 app.post('/insert', createUser)
 app.post('/update', UpdateUser)
-app.post('/Delete', UpdateUser)
+app.post('/Delete', DeleteeUser)
+app.post('/fetch', fetch)
 
 
 

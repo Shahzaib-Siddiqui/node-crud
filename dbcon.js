@@ -1,3 +1,5 @@
+const { request, response, json } = require('express')
+
 const Pool = require('pg').Pool
 const pool = new Pool({
 user:'equmnnxktroehw',
@@ -12,6 +14,19 @@ ssl:{
 })
 
 
+const fetch=(request,response)=>{
+  const{fname}=request.body
+  pool.query("Select * from public.Users where fname=$1",[fname],(error,results)=>{
+  if(error) {
+    throw error
+  }
+
+  response.status(200).send(results)
+  
+})
+}
+
+
 const query_func = (query)=>{
     pool.query(query, (error, results) => {
         if (error) {
@@ -23,16 +38,26 @@ const query_func = (query)=>{
 }
 
 const createUser = (request, response) => {
-   const {id, fname, email } = request.body
+   const {task,status} = request.body
 
-  pool.query('INSERT INTO public.Users (id,fname, email) VALUES ($1, $2, $3) RETURNING *', [id, fname, email], (error, results) =>  {
+  pool.query('INSERT INTO public.todolist (task  , status ) VALUES ($1, $2)', [task,status ], (error, results) =>  {
     if (error) {
       throw error
     }
-    response.status(201).send('User added with ID: ${results.rows[0].fname}')
+    response.status(201).send('User added with ID: ${results.rows[0].task}')
   })
 }
 
+const counttask=(request,response)=>{
+  pool.query('Select  count (public.todolist.id) as Total , count(status) filter (where false) as pending, count(status) filter (where true) as done  from public.todolist ',(error,results)=>{
+    if(error){
+      throw error
+    }
+    //let a=JSON.stringify(results.rows[0])
+      response.status(200).json(results.rows[0])
+   // response.status(200).send(results)
+  })
+}
 
 const UpdateUser = (request, response) => {
   const {id, fname } = request.body
@@ -41,7 +66,9 @@ const UpdateUser = (request, response) => {
    if (error) {
      throw error
    }
-   response.status(200).send('User updated id')
+   response.status(200).
+   
+   send('User updated id')
  })
 }
 
@@ -62,6 +89,10 @@ const DeleteeUser = (request, response) => {
 module.exports= {
   query_func,
   createUser,
-  UpdateUser
+  UpdateUser,
+  DeleteeUser,
+  fetch,
+  counttask
+  
 
 };
