@@ -1,0 +1,28 @@
+# docker-compose.yml
+version: "3"
+services:
+  app:
+    restart: on-failure
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://equmnnxktroehw:f9a1afd3f0ab50c91cbc60251ea7d99365d8e5780503bdec4097cc3422202f87@ec2-44-205-177-160.compute-1.amazonaws.com:5432/d4mer0e1us7qkk
+
+      NODE_ENV: development
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    command: npm run dev
+    volumes:
+      - .:/app/
+      - /app/node_modules
+
+  postgres:
+    image: postgres:11
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "equmnnxktroehw"
+      POSTGRES_PASSWORD: "f9a1afd3f0ab50c91cbc60251ea7d99365d8e5780503bdec4097cc3422202f87"
+      POSTGRES_DB: "d4mer0e1us7qkk"

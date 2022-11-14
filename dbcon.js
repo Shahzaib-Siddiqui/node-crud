@@ -1,12 +1,13 @@
 const { request, response, json } = require('express')
 
 const Pool = require('pg').Pool
+require('dotenv').config()
 const pool = new Pool({
-user:'equmnnxktroehw',
-host:'ec2-44-205-177-160.compute-1.amazonaws.com',
-database:'d4mer0e1us7qkk',
-password:'f9a1afd3f0ab50c91cbc60251ea7d99365d8e5780503bdec4097cc3422202f87',
-port:5432,
+user:process.env.user,
+host:process.env.host,
+database:process.env.database,
+password:process.env.password,
+port:process.env.port,
 ssl:{
     rejectUnauthorized:false
 }
